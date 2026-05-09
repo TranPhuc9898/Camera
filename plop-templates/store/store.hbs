@@ -1,0 +1,44 @@
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { storage, StorageKeys } from '@/lib/storage/mmkv';
+import { createBaseStoreSlice, type BaseStoreState } from '@/lib/arch';
+
+// ── MMKV adapter ──────────────────────────────────────────────────────────────
+
+const mmkvStorage = {
+  getItem: (name: string) => storage.getString(name) ?? null,
+  setItem: (name: string, value: string) => storage.set(name, value),
+  removeItem: (name: string) => storage.remove(name),
+};
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+type {{pascalCase name}}State = BaseStoreState & {
+  // TODO: add domain fields here
+};
+
+// ── Selectors ─────────────────────────────────────────────────────────────────
+
+// export const select{{pascalCase name}}Field = (s: {{pascalCase name}}State) => s.field;
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+
+type {{pascalCase name}}Actions = {
+  // TODO: add actions here
+};
+
+// ── Store ─────────────────────────────────────────────────────────────────────
+
+export const use{{pascalCase name}}Store = create<{{pascalCase name}}State & {{pascalCase name}}Actions>()(
+  persist(
+    (set) => ({
+      ...createBaseStoreSlice(set, () => set({ isHydrated: false })),
+      // TODO: initial domain state
+    }),
+    {
+      name: '{{kebabCase name}}.store',
+      storage: createJSONStorage(() => mmkvStorage),
+      onRehydrateStorage: () => (state) => state?.setHydrated(true),
+    },
+  ),
+);

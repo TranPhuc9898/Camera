@@ -1,0 +1,16 @@
+import { useQuery } from '@tanstack/react-query';
+import { {{camelCase feature}}Api } from '../api';
+
+export const {{camelCase feature}}Keys = {
+  all: ['{{kebabCase feature}}'] as const,
+  {{camelCase action}}: (id?: string) =>
+    [...{{camelCase feature}}Keys.all, '{{camelCase action}}', id].filter(Boolean) as string[],
+};
+
+export function use{{pascalCase action}}{{pascalCase feature}}(id: string) {
+  return useQuery({
+    queryKey: {{camelCase feature}}Keys.{{camelCase action}}(id),
+    queryFn: () => {{camelCase feature}}Api.get(id),
+    enabled: Boolean(id),
+  });
+}

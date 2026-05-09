@@ -1,0 +1,40 @@
+// TODO(unicorn): To use native bottom sheet, install @gorhom/bottom-sheet:
+//   npx expo install @gorhom/bottom-sheet react-native-gesture-handler react-native-reanimated
+//   Then replace the Modal below with BottomSheet from '@gorhom/bottom-sheet'.
+import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
+
+type {{pascalCase name}}SheetProps = {
+  visible: boolean;
+  onClose: () => void;
+};
+
+export function {{pascalCase name}}Sheet({ visible, onClose }: {{pascalCase name}}SheetProps) {
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <Pressable style={styles.backdrop} onPress={onClose} />
+      <View style={styles.sheet}>
+        <Text>{{pascalCase name}} Sheet</Text>
+        {/* TODO: add sheet content */}
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  sheet: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 24,
+    minHeight: 200,
+  },
+});

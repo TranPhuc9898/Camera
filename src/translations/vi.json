@@ -1,0 +1,25 @@
+{
+  "app": {
+    "name": "Unicorn"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "submit": "Xác nhận",
+    "welcome": "Chào mừng trở lại",
+    "createAccount": "Tạo tài khoản mới"
+  },
+  "tabs": {
+    "home": "Trang chủ",
+    "explore": "Khám phá",
+    "settings": "Cài đặt"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã có lỗi xảy ra",
+    "retry": "Thử lại"
+  }
+}

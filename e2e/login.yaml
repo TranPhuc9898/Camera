@@ -1,0 +1,9 @@
+appId: com.unicorn.app
+---
+- launchApp
+- tapOn: "Email"
+- inputText: "test@example.com"
+- tapOn: "Password"
+- inputText: "password123"
+- tapOn: "Submit"
+- assertVisible: "Home"

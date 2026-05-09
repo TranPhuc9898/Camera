@@ -1,0 +1,68 @@
+import { View, TextInput, Text, Pressable } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+// ── Schema ────────────────────────────────────────────────────────────────────
+
+const {{camelCase name}}Schema = z.object({
+  // TODO: add form fields
+  value: z.string().min(1, 'Required'),
+});
+
+type {{pascalCase name}}FormValues = z.infer<typeof {{camelCase name}}Schema>;
+
+// ── Props ─────────────────────────────────────────────────────────────────────
+
+type {{pascalCase name}}FormProps = {
+  onSubmit: (values: {{pascalCase name}}FormValues) => void;
+  isLoading?: boolean;
+};
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
+export function {{pascalCase name}}Form({ onSubmit, isLoading }: {{pascalCase name}}FormProps) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{{pascalCase name}}FormValues>({
+    resolver: zodResolver({{camelCase name}}Schema),
+    defaultValues: { value: '' },
+  });
+
+  return (
+    <View className="gap-md">
+      <Controller
+        control={control}
+        name="value"
+        render={({ field: { value, onChange, onBlur } }) => (
+          <View>
+            <TextInput
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="Value"
+              className="border border-gray-300 rounded-md px-md py-sm text-body"
+            />
+            {errors.value && (
+              <Text className="text-danger text-caption mt-xs">
+                {errors.value.message}
+              </Text>
+            )}
+          </View>
+        )}
+      />
+
+      <Pressable
+        onPress={handleSubmit(onSubmit)}
+        disabled={isLoading}
+        className="bg-primary-600 rounded-md py-sm items-center"
+      >
+        <Text className="text-white font-semibold">
+          {isLoading ? 'Loading...' : 'Submit'}
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
