@@ -1,54 +1,66 @@
 # Skill Workflow Routing
 
-When orchestrating multi-step tasks, consider these workflow sequences. Skills are listed in typical execution order.
+This project uses a **single skill system: the `u-*` suite**. Every implementation,
+fix, review, or question routes through a `u-*` orchestrator skill.
 
-## Core Development Workflow
+> Load **`u-task`** for any implementation request — it internally orchestrates the
+> domain skills (`u-screen`, `u-api`, `u-controller`, ...). You rarely load domain
+> skills by hand.
 
-```
-/ck:plan → /ck:cook → /ck:test → /ck:code-review → /ck:ship → /ck:journal
-```
+## Orchestrator Skills (entry points)
 
-| User Intent                               | Suggested Start            |
-| ----------------------------------------- | -------------------------- |
-| "implement feature X", "build X", "add X" | `/ck:plan` then `/ck:cook` |
-| "execute this plan"                       | `/ck:cook <plan-path>`     |
-| "quick implementation"                    | `/ck:cook --fast`          |
+| User Intent                                             | Load skill   |
+| ------------------------------------------------------- | ------------ |
+| "implement X", "build X", "add feature X", "new screen" | `u-task`     |
+| "X is broken", "bug in X", "crash", "wrong behaviour"   | `u-fix-bug`  |
+| "continue", "resume", fill a `TODO(ai)` scaffold        | `u-continue` |
+| "is this ready?", PR / branch readiness review          | `u-review`   |
+| End-of-task self-audit before shipping                  | `u-finalize` |
+| Any question, brainstorm, compare options, strategy     | `u-ask`      |
+| Real-device E2E UI automation (Maestro)                 | `u-verify`   |
 
-## Bugfix Workflow
-
-```
-/ck:scout → /ck:debug → /ck:fix → /ck:test → /ck:code-review
-```
-
-| User Intent                             | Suggested Start                    |
-| --------------------------------------- | ---------------------------------- |
-| "X is broken", "error in X", "bug in X" | `/ck:fix` (auto-scouts internally) |
-| "CI is failing", "tests broken"         | `/ck:fix --auto`                   |
-| "investigate why X happens"             | `/ck:scout` then `/ck:debug`       |
-
-## Investigation Workflow
+## Core Development Flow
 
 ```
-/ck:scout → /ck:debug → /ck:brainstorm → /ck:plan
+u-ask (optional: explore options)
+   → u-task (plan → Plop scaffold → fill layers → typecheck/lint)
+   → u-testing (unit + integration)
+   → u-review (readiness)
+   → u-finalize (self-audit → ship decision)
 ```
 
-| User Intent              | Suggested Start                  |
-| ------------------------ | -------------------------------- |
-| "understand how X works" | `/ck:scout`                      |
-| "why is X happening"     | `/ck:debug`                      |
-| "explore options for X"  | `/ck:brainstorm` then `/ck:plan` |
+`u-task` already runs the Analyze → Plan → Execute → Verify workflow from `CLAUDE.md`.
+Do NOT pre-plan separately — the planning phase lives inside `u-task`.
+
+## Bugfix Flow
+
+```
+u-fix-bug (classify → trace root cause → minimal fix → verify layer contracts)
+   → u-testing (regression)
+   → u-review
+```
+
+Write a failing test that reproduces the bug FIRST, then fix (Karpathy goal-driven gate).
+
+## Investigation Flow
+
+```
+u-ask (understand / compare approaches)        → for strategy questions
+Explore subagent (see agent-speed.md Rule 1)   → for codebase structure questions
+research skill                                  → for external tech/library research
+```
+
+## Setup / Support Skills
+
+- `u-worktree` — isolated git worktree per feature/fix before starting.
+- `u-codegen` — Plop generators, yarn scripts, `expo prebuild`, `eas build`.
+- `u-architecture` — layer placement, store registration, route grouping decisions.
 
 ## Post-Implementation Checklist
 
-After completing implementation work, consider:
+- `u-review` — readiness review before merging.
+- `u-finalize` — end-of-task self-audit (git diff → layer/wiring/RN-style checklist).
+- `journal` — document decisions and lessons (optional).
 
-- `/ck:code-review` — review changes before merging
-- `/ck:ship` — run full shipping pipeline (tests, review, version, PR)
-- `/ck:journal` — document decisions and lessons learned
-
-## Setup Skills
-
-Before starting implementation in a shared codebase:
-
-- `/ck:worktree` — create isolated worktree for the feature/fix
-- `/ck:scout` — discover relevant files and code patterns
+See `skill-domain-routing.md` for picking the right domain `u-*` skill,
+and `karpathy-principles.md` for the quality gates applied at each step.

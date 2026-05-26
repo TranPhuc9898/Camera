@@ -67,7 +67,7 @@ Agent(description: "Add storage key", prompt: "In src/lib/storage/mmkv.ts, add .
 
 ## Rule 3 — Fix-Loop Prevention
 
-### TypeScript / lint warnings (`npm run typecheck` / `npm run lint`)
+### TypeScript / lint warnings (`yarn typecheck` / `yarn lint`)
 
 **Classify before fixing.** When warnings appear, read each one and group them before touching any code:
 
@@ -92,12 +92,12 @@ typecheck (run 1) → read ALL warnings → classify → fix ALL in one pass →
 
 These are **not** typecheck loops — they follow a different pattern:
 
-| Command                        | Retry strategy                                                                                             | Stop condition                                                                               |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `npx plop <gen>` fails         | Read the exact error. Retry once with corrected flags/name if the error is a wrong argument.               | If error is not a wrong argument (missing generator, env issue) → surface immediately, STOP. |
-| `npx expo start` fails (Metro) | Retry once with `--clear` if cache-related.                                                                | Any other error → surface + STOP. Do NOT retry the identical command.                        |
-| `eas build` fails              | Read the error. Often a credential or app-config issue — surface + STOP, do not retry.                     | Always STOP — do not retry network/build calls.                                              |
-| i18n key sync fails            | Most common cause: key in one of `en.json`/`vi.json` but not the other — add the missing key, re-run once. | If still failing → surface + STOP.                                                           |
+| Command                         | Retry strategy                                                                                             | Stop condition                                                                               |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `yarn plop <gen>` fails         | Read the exact error. Retry once with corrected flags/name if the error is a wrong argument.               | If error is not a wrong argument (missing generator, env issue) → surface immediately, STOP. |
+| `yarn expo start` fails (Metro) | Retry once with `--clear` if cache-related.                                                                | Any other error → surface + STOP. Do NOT retry the identical command.                        |
+| `eas build` fails               | Read the error. Often a credential or app-config issue — surface + STOP, do not retry.                     | Always STOP — do not retry network/build calls.                                              |
+| i18n key sync fails             | Most common cause: key in one of `en.json`/`vi.json` but not the other — add the missing key, re-run once. | If still failing → surface + STOP.                                                           |
 
 **Retry only changes something.** Retrying the exact same command without changing anything is never correct — it will produce the same result.
 

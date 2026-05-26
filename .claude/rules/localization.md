@@ -48,7 +48,7 @@ Device locale detection uses `expo-localization`; user override persists via Zus
 <Text>{t('settings.title')}</Text>
 ```
 
-No regeneration step is needed — i18next reads JSON at runtime. If `Resources` types are exported in `src/lib/i18n/types.ts`, run `npm run typecheck` to surface missing keys.
+No regeneration step is needed — i18next reads JSON at runtime. If `Resources` types are exported in `src/lib/i18n/types.ts`, run `yarn typecheck` to surface missing keys.
 
 ## Parametrised Strings
 

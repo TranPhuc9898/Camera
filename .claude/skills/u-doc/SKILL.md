@@ -157,21 +157,21 @@ Mobile app — Expo + React Native + Clean Architecture.
 ## Quick start
 
 \```bash
-npm install
+yarn install
 cp .env.example .env.development # fill values
-npx expo start # iOS / Android / web
+yarn expo start # iOS / Android / web
 \```
 
 ## Build
 
 \```bash
-npx eas build --profile preview --platform ios
+yarn eas build --profile preview --platform ios
 \```
 
 ## Tests
 
 \```bash
-npm run typecheck && npm run lint && npm test
+yarn typecheck && yarn lint && yarn test
 \```
 
 ## Docs

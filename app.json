@@ -8,10 +8,14 @@
     "scheme": "unicorn",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "backgroundColor": "#EDE7FB",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.unicorn.app",
+      "backgroundColor": "#EDE7FB"
     },
     "android": {
+      "package": "com.unicorn.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -41,7 +45,8 @@
       ],
       "expo-secure-store",
       "expo-localization",
-      "@sentry/react-native"
+      "@sentry/react-native",
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,

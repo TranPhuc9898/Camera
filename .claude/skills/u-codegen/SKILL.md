@@ -1,15 +1,15 @@
 ---
 name: u-codegen
-description: 'Plop generators, npm scripts, expo prebuild, eas build, env regen for unicorn. Single source of truth for ALL package commands. Triggers — plop, generator, scaffold, npx plop, npm run, expo prebuild, eas build, codegen, env, npm command reference.'
+description: 'Plop generators, yarn scripts, expo prebuild, eas build, env regen for unicorn. Single source of truth for ALL package commands. Triggers — plop, generator, scaffold, yarn plop, yarn run, expo prebuild, eas build, codegen, env, yarn command reference.'
 ---
 
-# u-codegen — Plop, npm scripts, Expo / EAS commands
+# u-codegen — Plop, yarn scripts, Expo / EAS commands
 
 ## TL;DR
 
-- All package management goes through **npm** / **npx** — never pnpm, yarn, bun
-- New code is scaffolded with `npx plop <generator>` BEFORE filling logic
-- Native command surface: `npx expo <cmd>` (dev), `npx eas <cmd>` (cloud builds)
+- All package management goes through **yarn** (Yarn Berry 4.x) — never npm, pnpm, bun. Yarn Berry is pinned via the `packageManager` field in `package.json` + corepack
+- New code is scaffolded with `yarn plop <generator>` BEFORE filling logic
+- Native command surface: `yarn expo <cmd>` (dev), `yarn eas <cmd>` (cloud builds)
 - Plop generators live under `plop-templates/`, registered in `plopfile.js`
 - Run Plop from repo root only
 
@@ -21,16 +21,16 @@ Adding a new feature scaffold, adding a Plop generator, changing a script, regen
 
 ## Plop generators (built-in)
 
-| Generator   | Creates                                                                             | Command              |
-| ----------- | ----------------------------------------------------------------------------------- | -------------------- |
-| `screen`    | `src/features/<f>/screens/<name>-screen.tsx` + route `app/<route>.tsx` + en/vi keys | `npx plop screen`    |
-| `feature`   | Full feature folder skeleton (api.ts, types, store, use-cases/)                     | `npx plop feature`   |
-| `store`     | `src/features/<f>/<f>-store.ts` Zustand boilerplate                                 | `npx plop store`     |
-| `usecase`   | `src/features/<f>/use-cases/use-<verb>-<entity>.ts`                                 | `npx plop usecase`   |
-| `api`       | `getX/createX/updateX/deleteX` block in `api.ts`                                    | `npx plop api`       |
-| `sheet`     | `src/features/<f>/components/<name>-sheet.tsx`                                      | `npx plop sheet`     |
-| `form`      | `src/features/<f>/components/<name>-form.tsx` (RHF + zod)                           | `npx plop form`      |
-| `component` | Generic `src/features/<f>/components/<name>.tsx`                                    | `npx plop component` |
+| Generator   | Creates                                                                             | Command               |
+| ----------- | ----------------------------------------------------------------------------------- | --------------------- |
+| `screen`    | `src/features/<f>/screens/<name>-screen.tsx` + route `app/<route>.tsx` + en/vi keys | `yarn plop screen`    |
+| `feature`   | Full feature folder skeleton (api.ts, types, store, use-cases/)                     | `yarn plop feature`   |
+| `store`     | `src/features/<f>/<f>-store.ts` Zustand boilerplate                                 | `yarn plop store`     |
+| `usecase`   | `src/features/<f>/use-cases/use-<verb>-<entity>.ts`                                 | `yarn plop usecase`   |
+| `api`       | `getX/createX/updateX/deleteX` block in `api.ts`                                    | `yarn plop api`       |
+| `sheet`     | `src/features/<f>/components/<name>-sheet.tsx`                                      | `yarn plop sheet`     |
+| `form`      | `src/features/<f>/components/<name>-form.tsx` (RHF + zod)                           | `yarn plop form`      |
+| `component` | Generic `src/features/<f>/components/<name>.tsx`                                    | `yarn plop component` |
 
 Each generator prompts for arguments — feature name, kebab-case slug, etc.
 
@@ -38,7 +38,7 @@ Each generator prompts for arguments — feature name, kebab-case slug, etc.
 
 ---
 
-## Common npm scripts
+## Common yarn scripts
 
 ```jsonc
 // package.json — what's in there
@@ -62,14 +62,14 @@ Each generator prompts for arguments — feature name, kebab-case slug, etc.
 ```
 
 ```bash
-npm install                         # install deps
-npm install <pkg>                   # add a dep
-npm install --save-dev <pkg>        # add a dev dep
-npm uninstall <pkg>                 # remove a dep
+yarn install                        # install deps
+yarn add <pkg>                      # add a dep
+yarn add -D <pkg>                   # add a dev dep
+yarn remove <pkg>                   # remove a dep
 
-npm run typecheck                   # tsc no-emit
-npm run lint                        # eslint
-npm run test                        # jest
+yarn typecheck                      # tsc no-emit
+yarn lint                           # eslint
+yarn test                           # jest
 ```
 
 ---
@@ -77,34 +77,34 @@ npm run test                        # jest
 ## Expo / EAS commands
 
 ```bash
-npx expo start                      # Metro bundler (dev)
-npx expo start --clear              # clear cache (resolver issues)
-npx expo install <pkg>              # install with version pinned to SDK
+yarn expo start                     # Metro bundler (dev)
+yarn expo start --clear             # clear cache (resolver issues)
+yarn expo install <pkg>             # install with version pinned to SDK
 
-npx expo prebuild --clean           # regenerate ios/ + android/ from app.config.ts
+yarn expo prebuild --clean          # regenerate ios/ + android/ from app.config.ts
                                     # required after adding native modules
-npx expo run:ios                    # build + run iOS sim
-npx expo run:android                # build + run Android emulator
+yarn expo run:ios                   # build + run iOS sim
+yarn expo run:android               # build + run Android emulator
 
-npx eas build --profile development --platform ios
-npx eas build --profile preview     --platform android
-npx eas build --profile production  --platform all
-npx eas submit --profile production --platform ios
+yarn eas build --profile development --platform ios
+yarn eas build --profile preview     --platform android
+yarn eas build --profile production  --platform all
+yarn eas submit --profile production --platform ios
 ```
 
 **Cache nuke:**
 
 ```bash
 rm -rf node_modules .expo ios/Pods ios/build android/build
-npm install
-npx expo prebuild --clean
+yarn install
+yarn expo prebuild --clean
 ```
 
 ---
 
 ## When to prebuild
 
-Run `npx expo prebuild --clean` after:
+Run `yarn expo prebuild --clean` after:
 
 - Adding a native dep (`react-native-mmkv`, `@gorhom/bottom-sheet`, etc.)
 - Changing `app.config.ts` plugins / iOS/Android config
@@ -201,7 +201,7 @@ module.exports = (plop) => {
 ## i18n parity check
 
 ```bash
-npm run i18n:check
+yarn i18n:check
 ```
 
 Lists keys present in only one of `vi.json` / `en.json`. Run before commit. CI runs the same.
@@ -210,13 +210,13 @@ Lists keys present in only one of `vi.json` / `en.json`. Run before commit. CI r
 
 ## Do / Don't
 
-| ✅                              | ❌                                         |
-| ------------------------------- | ------------------------------------------ |
-| `npm` / `npx`                   | `pnpm`, `yarn`, `bun`                      |
-| `npx plop` to scaffold          | Hand-craft new files                       |
-| `npx expo install` for SDK deps | `npm install` for SDK deps (wrong version) |
-| Prebuild after native install   | Skip prebuild and wonder why build fails   |
-| EAS Secrets for build-time env  | Commit `.env.production`                   |
+| ✅                               | ❌                                       |
+| -------------------------------- | ---------------------------------------- |
+| `yarn` (Yarn Berry)              | `npm`, `pnpm`, `bun`                     |
+| `yarn plop` to scaffold          | Hand-craft new files                     |
+| `yarn expo install` for SDK deps | `yarn add` for SDK deps (wrong version)  |
+| Prebuild after native install    | Skip prebuild and wonder why build fails |
+| EAS Secrets for build-time env   | Commit `.env.production`                 |
 
 ---
 

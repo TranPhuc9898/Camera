@@ -7,7 +7,7 @@ description: 'End-of-task self-audit for unicorn (Expo + RN): git diff → layer
 
 Invoke when a feature or fix is complete, before committing.
 
-> **Run once** — If `u-finalize` already ran this session and found blockers, fix them first. Do not loop `u-finalize` on the same diff. After fixing blockers, re-run `npm run typecheck && npm run lint` only — not the full `u-finalize` again.
+> **Run once** — If `u-finalize` already ran this session and found blockers, fix them first. Do not loop `u-finalize` on the same diff. After fixing blockers, re-run `yarn typecheck && yarn lint` only — not the full `u-finalize` again.
 
 > **Role in the pipeline**: `u-finalize` is the **fix phase** — Claude finds and corrects violations before they reach review. `u-review` is the **verify phase** — confirms the fix landed.
 
@@ -241,10 +241,10 @@ Flag missing pieces:
 ## Step 9 — Verify
 
 ```bash
-npx prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
-npm run typecheck
-npm run lint
-npm test -- --findRelatedTests $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
+yarn prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
+yarn typecheck
+yarn lint
+yarn test --findRelatedTests $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
 ```
 
 Count only project sources. Fix each error/warning once, then re-run. **If errors persist after the second run — surface them to the user and stop. Do not loop.**
@@ -319,7 +319,7 @@ Check: routes ok · wiring ok · i18n ok · typecheck 0 · lint 0 · Evidence: [
 
 ## Never Do
 
-- Use `pnpm` / `yarn` / `bun` — npm only.
+- Use `npm` / `pnpm` / `bun` — yarn (Yarn Berry) only.
 - Ship with `axios` / `fetch` calls inside a screen — must go via `*-api.ts`.
 - Ship with server state stored in Zustand instead of TanStack Query.
 - Register a new persisted store key without adding it to `storage-keys.ts`.

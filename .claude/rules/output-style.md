@@ -66,7 +66,7 @@ Issues:
 
 Bỏ qua severity rows trống. File paths: `src/...` hoặc `app/...` (không relative).
 
-## Color Coding Convention (Karpathy × Claudekit)
+## Color Coding Convention (Karpathy × Skill `u-*`)
 
 **Mục đích:** Dùng `diff` block để phân biệt nhanh hệ nào đang hoạt động trong workflow.
 
@@ -81,7 +81,7 @@ Bỏ qua severity rows trống. File paths: `src/...` hoặc `app/...` (không r
 | Màu              | Marker      | Render      | Dùng cho                        |
 | ---------------- | ----------- | ----------- | ------------------------------- |
 | `#ae81ff` (tím)  | `@@ ... @@` | Tím/magenta | **KARPATHY** principles & gates |
-| `#ffb86c` (cam)  | `! ...`     | Vàng/cam    | **CLAUDEKIT** `/ck:*` đang chạy |
+| `#ffb86c` (cam)  | `! ...`     | Vàng/cam    | **SKILL** `u-*` đang chạy       |
 | `#89d4ff` (xanh) | `# ...`     | Xám/cyan    | Info / Note phụ                 |
 | `#ff79c6` (hồng) | `- ...`     | Đỏ/hồng     | Warning / Blocker / Fail        |
 | (xanh lá)        | `+ ...`     | Xanh        | Done / Success / Pass           |
@@ -93,7 +93,7 @@ Bỏ qua severity rows trống. File paths: `src/...` hoặc `app/...` (không r
 @@ → [check 1]
 @@ → [check 2]
 
-! CLAUDEKIT: /ck:[skill] đang chạy...
+! SKILL: u-[skill] đang chạy...
 ! → [output ngắn]
 
 + DONE: [kết quả]
@@ -103,7 +103,7 @@ Bỏ qua severity rows trống. File paths: `src/...` hoặc `app/...` (không r
 
 **Quy tắc:**
 
-1. **CHỈ dùng** khi chạy workflow Karpathy × Claudekit (brainstorm/plan/cook/test/review/ship)
+1. **CHỈ dùng** khi chạy workflow `u-*` (u-task / u-fix-bug / u-testing / u-review / u-finalize)
 2. **KHÔNG lạm dụng** cho chat hỏi đáp thông thường
-3. **`@@ KARPATHY @@` lên TRƯỚC `! CLAUDEKIT`** — Karpathy là gate, Claudekit là execution
+3. **`@@ KARPATHY @@` lên TRƯỚC `! SKILL`** — Karpathy là gate, skill `u-*` là execution
 4. **Mỗi diff block ≤15 dòng** — dài quá thì split

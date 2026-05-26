@@ -14,6 +14,17 @@ module.exports = {
           700: '#1d4ed8',
           900: '#1e3a8a',
         },
+        neo: {
+          bg: '#F4F6FF',
+          muted: '#ECE7FB',
+          primary: '#7C5CFC',
+          'primary-deep': '#6B4AE0',
+          'primary-dark': '#5B3FD0',
+          yellow: '#FFD23F',
+          'yellow-ink': '#3A2E00',
+          strong: '#1C1B2E',
+          faint: '#9A95B6',
+        },
       },
       spacing: {
         xxs: '2px',

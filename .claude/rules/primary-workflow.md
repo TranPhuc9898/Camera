@@ -55,17 +55,17 @@
 When explaining complex code, protocols, or architecture:
 
 - **When to use:** User asks "explain", "how does X work", "visualize", or topic has 3+ interacting components
-- Use `/ck:preview --explain <topic>` to generate visual explanation with ASCII + Mermaid
-- Use `/ck:preview --diagram <topic>` for architecture and data flow diagrams
-- Use `/ck:preview --slides <topic>` for step-by-step walkthroughs
-- Use `/ck:preview --ascii <topic>` for terminal-friendly output only
+- Use `/preview --explain <topic>` to generate visual explanation with ASCII + Mermaid
+- Use `/preview --diagram <topic>` for architecture and data flow diagrams
+- Use `/preview --slides <topic>` for step-by-step walkthroughs
+- Use `/preview --ascii <topic>` for terminal-friendly output only
 - **HTML mode** (add `--html` for self-contained HTML pages, opens directly in browser):
-  - `/ck:preview --html --explain <topic>` — publication-quality HTML explanation
-  - `/ck:preview --html --diagram <topic>` — interactive HTML diagram with zoom controls
-  - `/ck:preview --html --slides <topic>` — magazine-quality slide deck
-  - `/ck:preview --html --diff [ref]` — visual diff review
-  - `/ck:preview --html --plan-review` — plan vs codebase comparison
-  - `/ck:preview --html --recap [timeframe]` — project context snapshot
+  - `/preview --html --explain <topic>` — publication-quality HTML explanation
+  - `/preview --html --diagram <topic>` — interactive HTML diagram with zoom controls
+  - `/preview --html --slides <topic>` — magazine-quality slide deck
+  - `/preview --html --diff [ref]` — visual diff review
+  - `/preview --html --plan-review` — plan vs codebase comparison
+  - `/preview --html --recap [timeframe]` — project context snapshot
 - **Plan context:** Visuals save to plan folder from `## Plan Context` hook injection; if none, uses `plans/visuals/`
 - **Markdown mode:** Auto-opens in browser via markdown-novel-viewer with Mermaid rendering
 - **HTML mode:** Opens directly in browser — self-contained, no server needed

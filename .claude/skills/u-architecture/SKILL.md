@@ -75,7 +75,7 @@ Load when the task involves: deciding where a file belongs, fixing a layer viola
 ### A new screen for an existing feature
 
 - Component file → `src/features/<f>/screens/<name>-screen.tsx`
-- Route entry → `app/(tabs)/<route>.tsx` or nested layout. Use Plop: `npx plop screen`
+- Route entry → `app/(tabs)/<route>.tsx` or nested layout. Use Plop: `yarn plop screen`
 - If screen needs feature state → use existing `<f>-store.ts`, do not invent another store
 
 ### A new API endpoint
@@ -93,9 +93,9 @@ Load when the task involves: deciding where a file belongs, fixing a layer viola
 ### A new feature
 
 - Create folder `src/features/<feature>/`
-- Run `npx plop store` for the Zustand store
-- Run `npx plop api` for the api module
-- Run `npx plop usecase` for the first use-case hook
+- Run `yarn plop store` for the Zustand store
+- Run `yarn plop api` for the api module
+- Run `yarn plop usecase` for the first use-case hook
 - Add types in `src/features/<f>/types.ts`
 - Routes inside `app/(tabs)/<feature>.tsx` or grouped layout
 
@@ -316,22 +316,22 @@ When adding a new global provider: add at the right depth (cross-cutting → out
 
 ## Checklist for adding a new feature
 
-1. `npx plop store --name <feature>` → scaffolds `<f>-store.ts`
-2. `npx plop api --name <feature>` → scaffolds `api.ts`
-3. `npx plop usecase --name <feature> --action <verb>` → scaffolds `use-<verb>-{query,mutation}.ts`
-4. `npx plop screen --name <feature>` → scaffolds screen + route
+1. `yarn plop store --name <feature>` → scaffolds `<f>-store.ts`
+2. `yarn plop api --name <feature>` → scaffolds `api.ts`
+3. `yarn plop usecase --name <feature> --action <verb>` → scaffolds `use-<verb>-{query,mutation}.ts`
+4. `yarn plop screen --name <feature>` → scaffolds screen + route
 5. Add `types.ts` if shared shapes exist
 6. Add i18n keys in both `en.json` + `vi.json` if user-visible strings
 7. Add `StorageKeys.<KEY>` if persisting feature data
 8. Wire route in `app/(tabs)/_layout.tsx` if it's a new tab
-9. `npm run typecheck && npm run lint` — must pass before commit
+9. `yarn typecheck && yarn lint` — must pass before commit
 10. Load `u-finalize` for self-audit
 
 ---
 
 ## See also
 
-- `u-codegen` — Plop, npm scripts, EAS commands
+- `u-codegen` — Plop, yarn scripts, EAS commands
 - `u-controller` — feature-local Zustand stores
 - `u-global-store` — `src/lib/*` global stores
 - `u-usecase` — use-case hook patterns

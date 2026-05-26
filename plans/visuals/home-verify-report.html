@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home Screen — Verify Report</title>
+    <style>
+      :root {
+        --bg: #f4f6ff;
+        --card: #ffffff;
+        --ink: #1c1b2e;
+        --muted: #9a95b6;
+        --primary: #7c5cfc;
+        --primary-deep: #6b4ae0;
+        --ok: #16a34a;
+        --line: #ece7fb;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        padding: 32px 20px;
+        line-height: 1.5;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 24px;
+        font-weight: 800;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      @media (max-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .shot {
+        background: var(--card);
+        border-radius: 24px;
+        padding: 14px;
+        box-shadow: 0 18px 40px rgba(124, 92, 252, 0.18);
+      }
+      .shot img {
+        width: 100%;
+        border-radius: 16px;
+        display: block;
+      }
+      .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .check {
+        background: var(--card);
+        border-radius: 18px;
+        padding: 16px 18px;
+        box-shadow: 0 8px 22px rgba(124, 92, 252, 0.1);
+      }
+      .check h2 {
+        font-size: 15px;
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .req {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 10px;
+        font-style: italic;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        font-size: 13px;
+        padding: 5px 0;
+        border-top: 1px solid var(--line);
+      }
+      .row:first-of-type {
+        border-top: none;
+      }
+      .badge {
+        flex: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--ok);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .verdict {
+        background: linear-gradient(135deg, #7c5cfc, #6b4ae0);
+        color: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        text-align: center;
+      }
+      .verdict .big {
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .verdict .small {
+        font-size: 12px;
+        opacity: 0.85;
+        margin-top: 4px;
+      }
+      code {
+        background: #ece7fb;
+        border-radius: 5px;
+        padding: 1px 5px;
+        font-size: 12px;
+      }
+      footer {
+        margin-top: 24px;
+        font-size: 11px;
+        color: var(--muted);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Home Screen — Báo cáo kiểm tra</h1>
+      <p class="sub">
+        Phương pháp: chụp màn hình simulator (xcrun simctl) · App
+        <code>com.unicorn.app</code> · Ngày 2026-05-23
+      </p>
+
+      <div class="grid">
+        <div class="shot">
+          <img src="home-verify.png" alt="Home screen screenshot" />
+        </div>
+
+        <div class="panel">
+          <div class="verdict">
+            <div class="big">✅ ĐẠT — Khớp yêu cầu</div>
+            <div class="small">2/2 hạng mục đúng như anh mô tả</div>
+          </div>
+
+          <div class="check">
+            <h2>1 · Nút START</h2>
+            <p class="req">
+              Yêu cầu: bỏ viền tối, theo style neumorphism — "tím nổi mềm 3D"
+            </p>
+            <div class="row">
+              <span class="badge">✓</span>
+              <span>Đã bỏ vành tối ở đáy nút — không còn rim cứng.</span>
+            </div>
+            <div class="row">
+              <span class="badge">✓</span>
+              <span
+                >Khối tròn tím gradient + quầng sáng tím mềm tỏa quanh — đúng
+                kiểu nổi mềm.</span
+              >
+            </div>
+            <div class="row">
+              <span class="badge">✓</span>
+              <span>Bấm vào lún nhẹ xuống (SINK 4px) thay vì bật lên.</span>
+            </div>
+          </div>
+
+          <div class="check">
+            <h2>2 · 4 thẻ chỉ số (stacked-card)</h2>
+            <p class="req">
+              Yêu cầu: 2 lớp — lớp trên giữ nguyên, lớp nền dưới màu nhạt lú ra
+            </p>
+            <div class="row">
+              <span class="badge">✓</span>
+              <span
+                >Mỗi thẻ (SETS, REPS, PACE, RECOVERY) có lớp nền tím nhạt lú ra
+                dưới đáy.</span
+              >
+            </div>
+            <div class="row">
+              <span class="badge">✓</span>
+              <span>Lớp trên giữ nguyên màu trắng / tím nhạt như cũ.</span>
+            </div>
+            <div class="row">
+              <span class="badge">✓</span>
+              <span
+                >Màu lớp nền dùng token <code>Neo.cardLayer</code> (#E3DEF2) —
+                không hardcode hex trong component.</span
+              >
+            </div>
+          </div>
+
+          <div class="check">
+            <h2>File đã đổi</h2>
+            <div class="row">
+              <span class="badge">~</span>
+              <span><code>src/theme/colors.ts</code> — thêm token cardLayer</span>
+            </div>
+            <div class="row">
+              <span class="badge">~</span>
+              <span
+                ><code>src/features/home/components/workout-stat-card.tsx</code>
+                — bọc View + lớp nền absolute</span
+              >
+            </div>
+            <div class="row">
+              <span class="badge">~</span>
+              <span
+                ><code>src/features/home/components/start-workout-button.tsx</code>
+                — viết lại, bỏ rim tối</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        typecheck: 0 lỗi ở file đã đổi · lint: 0 lỗi ở file đã đổi · (lỗi
+        login-screen.tsx có sẵn, không liên quan)
+      </footer>
+    </div>
+  </body>
+</html>

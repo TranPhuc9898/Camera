@@ -132,7 +132,7 @@ Root causes:
 Root causes:
 
 - `app/_layout.tsx` provider stack throws synchronously (e.g. i18n init before `SplashScreen.preventAutoHideAsync`)
-- Native module require failed (added a package without `npx expo prebuild` or rebuild)
+- Native module require failed (added a package without `yarn expo prebuild` or rebuild)
 - Hermes incompatible code path (e.g. proxies, dynamic import) — check `engine: hermes` in `app.json`
 - Reanimated `babel.config.js` plugin missing → silent jsi crash
 - Font load promise rejected and `<SplashScreen />` never hidden
@@ -172,16 +172,16 @@ Agent(
 Reproduce in Expo dev:
 
 ```bash
-npx expo start --dev-client          # or
-npx expo run:ios                     # native build
-npx expo run:android
+yarn expo start --dev-client         # or
+yarn expo run:ios                    # native build
+yarn expo run:android
 ```
 
 For native crashes, capture the trace:
 
 ```bash
-npx react-native log-ios             # iOS console
-npx react-native log-android         # adb logcat tail
+yarn react-native log-ios            # iOS console
+yarn react-native log-android        # adb logcat tail
 ```
 
 ---
@@ -364,10 +364,10 @@ export const useAuthStore = create<AuthState>()(
 ## Phase 6 — Verify & Fix Report
 
 ```bash
-npx prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
-npm run typecheck
-npm run lint
-npm test -- --findRelatedTests $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
+yarn prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
+yarn typecheck
+yarn lint
+yarn test --findRelatedTests $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
 ```
 
 Fix each error/warning once, then re-run. **If errors persist after the second run — surface them to the user and stop. Do not loop.**

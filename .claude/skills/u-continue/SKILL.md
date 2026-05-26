@@ -96,9 +96,9 @@ For each `TODO(ai)` item:
 
 ```bash
 grep -rn "TODO(ai)" $(git diff HEAD --name-only | grep -E '\.(ts|tsx)$') 2>/dev/null
-npx prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
-npm run typecheck
-npm run lint
+yarn prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
+yarn typecheck
+yarn lint
 ```
 
 Fix each error/warning once, then re-run `typecheck && lint` once. **If errors persist after the second run — surface exact errors and stop. Do not loop.**
@@ -198,7 +198,7 @@ Resuming from: [last completed step]
 Remaining (in order):
   1. [concrete action]
   2. [concrete action]
-  3. npm run typecheck && npm run lint
+  3. yarn typecheck && yarn lint
 Files to fix first: · [file:line] — [exact fix]
 ======================================================
 ```
@@ -226,14 +226,14 @@ Fix broken things before adding new things:
    - Agent 1: Create / update route file under `app/`.
    - Agent 2: Add missing i18n keys to BOTH `en.json` and `vi.json`.
    - Agent 3: Add missing storage keys to `storage-keys.ts` (if persisted state added).
-5. `npx prettier --write ...`
+5. `yarn prettier --write ...`
 
 ### Phase 6-I — Verify
 
 ```bash
-npx prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
-npm run typecheck
-npm run lint
+yarn prettier --write $(git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | tr '\n' ' ')
+yarn typecheck
+yarn lint
 ```
 
 Fix each error/warning once, then re-run once. **If errors persist after the second run — surface exact errors and stop. Do not loop.**
@@ -262,17 +262,17 @@ Check:  routes ok · wiring ok · i18n ok · typecheck 0 · lint 0
 
 ## Common Scenarios
 
-| Scenario             | Signal                                      | Action                                                  |
-| -------------------- | ------------------------------------------- | ------------------------------------------------------- |
-| Scaffold mode        | `TODO(ai)` markers                          | Fill data → domain → presentation                       |
-| Mid-Plop interrupt   | Generated files unmodified                  | Fill all stubs                                          |
-| Stopped after hook   | No `*-screen.tsx`                           | `npx plop screen --name=...`, implement screen          |
-| Route file missing   | `router.push('/x')` but no `app/x.tsx`      | Create the file, point to screen export                 |
-| i18n keys missing    | `t('xxx.yyy')` in JSX, absent from JSON     | Add to BOTH `en.json` and `vi.json`                     |
-| Stale persist        | Store shape changed, no `version`/`migrate` | Bump `version` + add `migrate`                          |
-| Looping on TS errors | Same error reappears                        | Fix root cause                                          |
-| Partial screen       | Screen renders only `<View />`              | Implement all sections                                  |
-| Native module added  | Package installed, app crashes              | `npx expo prebuild --clean && npx expo run:ios/android` |
+| Scenario             | Signal                                      | Action                                                    |
+| -------------------- | ------------------------------------------- | --------------------------------------------------------- |
+| Scaffold mode        | `TODO(ai)` markers                          | Fill data → domain → presentation                         |
+| Mid-Plop interrupt   | Generated files unmodified                  | Fill all stubs                                            |
+| Stopped after hook   | No `*-screen.tsx`                           | `yarn plop screen --name=...`, implement screen           |
+| Route file missing   | `router.push('/x')` but no `app/x.tsx`      | Create the file, point to screen export                   |
+| i18n keys missing    | `t('xxx.yyy')` in JSX, absent from JSON     | Add to BOTH `en.json` and `vi.json`                       |
+| Stale persist        | Store shape changed, no `version`/`migrate` | Bump `version` + add `migrate`                            |
+| Looping on TS errors | Same error reappears                        | Fix root cause                                            |
+| Partial screen       | Screen renders only `<View />`              | Implement all sections                                    |
+| Native module added  | Package installed, app crashes              | `yarn expo prebuild --clean && yarn expo run:ios/android` |
 
 ## Never Do
 

@@ -46,3 +46,22 @@ export const AppColors = {
 } as const;
 
 export type ColorScheme = keyof typeof AppColors;
+
+/**
+ * Neumorphism palette — fixed (non-themed) tokens for the workout Home screen.
+ * Mirrored as the `neo-*` color group in tailwind.config.js.
+ */
+export const Neo = {
+  bgApp: '#EDE7FB',
+  surface: '#FFFFFF',
+  surfaceMuted: '#ECE7FB',
+  /** Pale base layer peeking out below a stat card — the stacked-card effect. */
+  cardLayer: '#E3DEF2',
+  primary: '#7C5CFC',
+  primaryDeep: '#6B4AE0',
+  primaryDark: '#5B3FD0',
+  primaryLight: '#9B80FF',
+  accentYellow: '#FFD23F',
+  textStrong: '#1C1B2E',
+  textMuted: '#9A95B6',
+} as const;

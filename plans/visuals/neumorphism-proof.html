@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neumorphism proof — boxShadow, 0 thư viện</title>
+<style>
+  :root{
+    /* ===== TOKEN MÀU (sẽ vào src/theme/index.ts) ===== */
+    --bg-app:        #F4F6FF;
+    --surface:       #FFFFFF;
+    --surface-muted: #ECE7FB;
+    --primary:       #7C5CFC;
+    --primary-deep:  #6B4AE0;
+    --primary-dark:  #5B3FD0;
+    --accent-yellow: #FFD23F;
+    --text-strong:   #1C1B2E;
+    --text-muted:    #9A95B6;
+
+    /* ===== TOKEN SHADOW (sẽ vào AppShadows) — neumorphism = 2 lớp ===== */
+    --neo-raised:
+      8px 8px 18px rgba(174,174,200,.45),
+      -8px -8px 18px rgba(255,255,255,.95);
+    --neo-flat:
+      5px 5px 12px rgba(174,174,200,.30),
+      -4px -4px 10px rgba(255,255,255,.70);
+    --neo-pressed:                      /* inset = trạng thái lõm */
+      inset 5px 5px 10px rgba(174,174,200,.50),
+      inset -5px -5px 10px rgba(255,255,255,.90);
+    --btn-extruded:                     /* nút lồi 3D */
+      0 14px 0 var(--primary-dark),
+      0 26px 34px rgba(124,92,252,.50);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;}
+  body{background:#2a2740;min-height:100vh;display:flex;flex-direction:column;
+       align-items:center;gap:18px;padding:34px 16px;}
+  .note{color:#d9d4ff;font-size:13px;text-align:center;max-width:430px;line-height:1.55;}
+  .note b{color:#fff;}
+  .note code{background:#413c63;padding:1px 6px;border-radius:5px;font-size:12px;}
+
+  /* ===== KHUNG ĐIỆN THOẠI ===== */
+  .phone{
+    width:390px;background:var(--bg-app);border-radius:42px;
+    padding:22px 20px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55);
+  }
+
+  /* ---- HEADER ---- */
+  .header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+  .icon-btn{
+    width:46px;height:46px;border-radius:15px;background:var(--surface);
+    display:flex;align-items:center;justify-content:center;font-size:19px;
+    box-shadow:var(--neo-flat);
+  }
+  .header .spacer{flex:1;}
+  .pill{
+    display:inline-flex;align-items:center;gap:5px;border-radius:999px;
+    font-weight:800;font-size:11px;letter-spacing:.4px;padding:8px 13px;
+  }
+  .pill.lavender{background:var(--surface-muted);color:var(--primary-deep);}
+  .pill.yellow{background:var(--accent-yellow);color:#3a2e00;}
+  .avatar{
+    width:46px;height:46px;border-radius:999px;
+    background:linear-gradient(135deg,#ffb86c,#7C5CFC);
+    border:3px solid #fff;box-shadow:var(--neo-flat);
+  }
+
+  /* ---- CARD RECOMMENDED SESSION ---- */
+  .session-card{
+    background:linear-gradient(160deg,#FBFAFF,#EFEBFE);
+    border-radius:30px;padding:24px 22px 30px;text-align:center;
+    box-shadow:var(--neo-raised);margin-bottom:22px;
+  }
+  .session-card .title{font-size:25px;font-weight:800;color:var(--text-strong);
+    margin-top:16px;line-height:1.18;}
+  .session-card .title .accent{color:var(--primary);}
+
+  /* ---- NÚT START tròn lồi 3D ---- */
+  .start-btn{
+    width:160px;height:160px;border-radius:999px;margin:24px auto 4px;
+    background:radial-gradient(circle at 38% 32%,#9b80ff,var(--primary) 55%,var(--primary-deep));
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;box-shadow:var(--btn-extruded);
+  }
+  .start-btn .play{
+    width:0;height:0;border-style:solid;border-width:17px 0 17px 28px;
+    border-color:transparent transparent transparent #fff;margin-left:8px;
+  }
+  .start-btn .label{color:#fff;font-weight:800;font-size:15px;letter-spacing:1.5px;}
+
+  /* ---- SECTION HEADER ---- */
+  .section-head{display:flex;align-items:center;margin-bottom:3px;}
+  .section-head h2{font-size:19px;font-weight:800;color:var(--text-strong);flex:1;}
+  .section-sub{font-size:12px;color:var(--text-muted);margin-bottom:16px;}
+
+  /* ---- GRID STAT 2x2 ---- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .stat-card{border-radius:22px;padding:16px;min-height:118px;
+    display:flex;flex-direction:column;}
+  .stat-card.white{background:var(--surface);box-shadow:var(--neo-raised);}
+  .stat-card.lavender{background:var(--surface-muted);box-shadow:var(--neo-flat);}
+  .stat-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .stat-ico{width:30px;height:30px;border-radius:9px;background:rgba(124,92,252,.14);
+    display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .stat-label{font-size:10px;font-weight:800;letter-spacing:.6px;color:var(--text-muted);}
+  .stat-value{font-size:34px;font-weight:800;color:var(--primary-deep);margin-top:auto;}
+  .stat-foot{font-size:10px;font-weight:700;color:var(--text-muted);margin-top:6px;}
+  .tag{align-self:flex-start;background:rgba(124,92,252,.12);color:var(--primary-deep);
+    font-size:9px;font-weight:800;padding:4px 8px;border-radius:999px;margin-top:6px;}
+  .bar{height:7px;border-radius:999px;background:rgba(124,92,252,.15);margin-top:8px;}
+  .bar > i{display:block;height:100%;width:62%;border-radius:999px;background:var(--primary);}
+</style>
+</head>
+<body>
+
+  <div class="note">
+    <b>Bằng chứng:</b> toàn bộ shadow dưới đây là <code>box-shadow</code> CSS thuần —
+    cùng spec với <code>boxShadow</code> của React Native 0.81.<br>
+    <b>0 thư viện</b> · không ART · không svg · không skia. Render HTML sao thì RN render y vậy.
+  </div>
+
+  <div class="phone">
+
+    <div class="header">
+      <div class="icon-btn">🏠</div>
+      <div class="spacer"></div>
+      <div class="pill lavender">🔥 12 STREAK</div>
+      <div class="avatar"></div>
+    </div>
+
+    <div class="session-card">
+      <div class="pill yellow">RECOMMENDED SESSION</div>
+      <div class="title">LEG DAY:<br><span class="accent">HYPERTROPHY</span></div>
+      <div class="start-btn">
+        <div class="play"></div>
+        <div class="label">START</div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>DEFAULT SETUP</h2>
+      <div class="pill lavender">EDIT PLAN</div>
+    </div>
+    <div class="section-sub">Targeting moderate muscle growth</div>
+
+    <div class="grid">
+      <div class="stat-card white">
+        <div class="stat-top"><div class="stat-ico">📦</div><div class="stat-label">SETS</div></div>
+        <div class="stat-value">4</div>
+        <div class="tag">⚡ XP BOOST</div>
+      </div>
+      <div class="stat-card lavender">
+        <div class="stat-top"><div class="stat-ico">🔁</div><div class="stat-label">REPS</div></div>
+        <div class="stat-value">12</div>
+        <div class="stat-foot">GOAL: 10-15</div>
+      </div>
+      <div class="stat-card lavender">
+        <div class="stat-top"><div class="stat-ico">⏱️</div><div class="stat-label">PACE</div></div>
+        <div class="stat-value">3:1:1</div>
+        <div class="tag">COMBO X2</div>
+      </div>
+      <div class="stat-card white">
+        <div class="stat-top"><div class="stat-ico">💤</div><div class="stat-label">RECOVERY</div></div>
+        <div class="stat-value">90<small style="font-size:18px">s</small></div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note" style="margin-top:6px">
+    Card trắng = <code>--neo-raised</code> (2 shadow lồi) · card tím = <code>--neo-flat</code> ·
+    nút START = <code>--btn-extruded</code> (lồi 3D). Toàn bộ là token, đổi 1 chỗ đổi cả app.
+  </div>
+
+</body>
+</html>

@@ -76,76 +76,74 @@ Task nhiều bước → state plan ngắn:
 
 ---
 
-## Tích Hợp Karpathy × Claudekit (`/ck:*`)
+## Tích Hợp Karpathy × Skill `u-*`
 
-**Nguyên tắc Karpathy KHÔNG thay thế claudekit — chúng là GATE KIỂM TRA tại từng skill.**
+**Nguyên tắc Karpathy KHÔNG thay thế skill `u-*` — chúng là GATE KIỂM TRA tại từng phase.**
 
 ### Mapping: Nguyên tắc → Skill chịu trách nhiệm
 
-| Nguyên tắc Karpathy          | Skill enforce                                       | Kiểm tra cụ thể                                  |
-| ---------------------------- | --------------------------------------------------- | ------------------------------------------------ |
-| **1. Think Before Coding**   | `/ck:brainstorm`, `/ck:scout`, `/ck:plan`           | Đã state assumptions? Đã hỏi clarify?            |
-| **2. Simplicity First**      | `/ck:plan`, `/ck:cook`, `/ck:simplify`              | 200 dòng có thành 50 không? Có abstraction thừa? |
-| **3. Surgical Changes**      | `/ck:cook`, `/ck:fix`, `/ck:code-review`            | Mỗi diff line có trace về user request?          |
-| **4. Goal-Driven Execution** | `/ck:plan` (define), `/ck:test` (verify), `/ck:fix` | Có success criteria kiểm chứng được?             |
+| Nguyên tắc Karpathy          | Skill enforce                               | Kiểm tra cụ thể                                  |
+| ---------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| **1. Think Before Coding**   | `u-ask`, `u-task` (Phase Analyze/Plan)      | Đã state assumptions? Đã hỏi clarify?            |
+| **2. Simplicity First**      | `u-task` (Phase Plan), `u-refactor`         | 200 dòng có thành 50 không? Có abstraction thừa? |
+| **3. Surgical Changes**      | `u-task`, `u-fix-bug`, `u-review`           | Mỗi diff line có trace về user request?          |
+| **4. Goal-Driven Execution** | `u-task` (Verify), `u-testing`, `u-fix-bug` | Có success criteria kiểm chứng được?             |
 
 ### Quy Trình Tích Hợp Theo Loại Task
 
 #### Task ĐƠN GIẢN (typo, one-liner, rename)
 
-→ `/cook` trực tiếp. **BỎ QUA** Karpathy rigor (per trade-off rule).
+→ Sửa trực tiếp. **BỎ QUA** Karpathy rigor (per trade-off rule).
 
 #### Task BUG FIX
 
 ```
-/ck:scout (tìm root cause)
+u-fix-bug — classify → trace root cause
    ↓
-/ck:debug (phân tích)
+[Karpathy Gate: VIẾT TEST REPRODUCE TRƯỚC]   ← Goal-Driven
    ↓
-[Karpathy Gate: VIẾT TEST REPRODUCE TRƯỚC]  ← Goal-Driven
+u-fix-bug — minimal fix (apply Surgical Changes)  ← Chỉ sửa cái gây bug
    ↓
-/ck:fix (apply Surgical Changes)             ← Chỉ sửa cái gây bug
+u-testing — verify test pass (regression)
    ↓
-/ck:test (verify test pass)
-   ↓
-/ck:code-review (check 4 nguyên tắc)
+u-review — check 4 nguyên tắc
 ```
 
 #### Task FEATURE MỚI
 
 ```
-/ck:brainstorm
+u-ask (optional: explore options)
    ↓
 [Karpathy Gate: STATE ASSUMPTIONS, PUSH BACK nếu phức tạp]
    ↓
 "Anh cảm thấy ổn áp không? Em code nhé."
    ↓
-/ck:plan
+u-task — Phase Plan
    ↓
 [Karpathy Gate: DEFINE SUCCESS CRITERIA verifiable]
    ↓
-/ck:cook
+u-task — Phase Execute (Plop scaffold → fill layers)
    ↓
 [Karpathy Gate: SIMPLICITY + SURGICAL]
    ↓
-/ck:test → /ck:code-review → /ck:ship → /ck:journal
+u-task Verify → u-testing → u-review → u-finalize
 ```
 
 ### Gates Bắt Buộc (Self-Check Trước Khi Tiếp Tục)
 
-**Trước khi `/ck:cook`:**
+**Trước khi Execute (`u-task` Phase Execute):**
 
 - [ ] Đã nêu rõ assumptions của task?
 - [ ] Có success criteria kiểm chứng được (không chỉ "make it work")?
 - [ ] Plan có simpler alternative nào không?
 
-**Trong khi `/ck:cook`:**
+**Trong khi Execute:**
 
 - [ ] Có đang drive-by refactor code không liên quan?
 - [ ] Có đang thêm abstraction "phòng khi cần"?
 - [ ] Có đang thêm error handling cho case không thể xảy ra?
 
-**Sau khi `/ck:cook`, trước `/ck:code-review`:**
+**Sau khi Execute, trước `u-review`:**
 
 - [ ] Mỗi changed line có trace TRỰC TIẾP về user request?
 - [ ] Code có thể viết ngắn hơn không (200→50 test)?
@@ -153,8 +151,8 @@ Task nhiều bước → state plan ngắn:
 
 ### Xử Lý Conflict Giữa Rules Cũ và Karpathy
 
-| Conflict                                                                               | Resolution                                                                        |
-| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Claudekit nói "file >200 dòng → modularize" vs Karpathy "đừng refactor cái không hỏng" | **Modularize CHỈ KHI** đang chạm vào file đó cho task chính. KHÔNG drive-by.      |
-| Pipeline Visibility (`> /ck:* đang chạy`) vs Simplicity First                          | Pipeline Visibility là về UX của user → **GIỮ NGUYÊN**, không bị ảnh hưởng        |
-| `/cook` direct vs Goal-Driven test-first                                               | Bug fix → test-first BẮT BUỘC. Feature mới → spec/plan trước, test-first OPTIONAL |
+| Conflict                                                                           | Resolution                                                                   |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Rules nói "file >200 dòng → modularize" vs Karpathy "đừng refactor cái không hỏng" | **Modularize CHỈ KHI** đang chạm vào file đó cho task chính. KHÔNG drive-by. |
+| `u-task` Verify (typecheck/lint) vs Simplicity First                               | Verify là gate chất lượng bắt buộc → **GIỮ NGUYÊN**, không bị ảnh hưởng      |
+| Sửa trực tiếp vs Goal-Driven test-first                                            | Bug fix → test-first BẮT BUỘC. Feature mới → plan trước, test-first OPTIONAL |

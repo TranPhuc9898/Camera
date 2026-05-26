@@ -27,11 +27,11 @@ For ANY task (feature, fix, refactor):
 1. **Analyze** — Explore relevant code under `src/` and `app/`. Do NOT write code yet.
 2. **Plan** — List files to touch, Plop commands, store registrations, skills to load. State the plan first.
 3. **Execute** — Run Plop FIRST for new components, then fill logic.
-4. **Verify** — `npx prettier --write $(git diff --name-only | grep -E '\.(ts|tsx)$')` once, then `npm run typecheck && npm run lint` (scope: `src/` + `app/` warnings only).
+4. **Verify** — `yarn prettier --write $(git diff --name-only | grep -E '\.(ts|tsx)$')` once, then `yarn typecheck && yarn lint` (scope: `src/` + `app/` warnings only).
 
-## Critical: npm Required
+## Critical: Yarn Required
 
-**ALL** package commands MUST use `npm` / `npx`. No `pnpm`, `yarn`, `bun`. Native commands use `npx expo` / `npx eas`. See the `u-codegen` skill for the full command reference.
+**ALL** package commands MUST use `yarn` (Yarn Berry 4.x, pinned via `packageManager` in `package.json` + corepack). No `npm`, `pnpm`, `bun`. Native commands use `yarn expo` / `yarn eas`. Run scripts as `yarn <script>` (e.g. `yarn typecheck`), package binaries as `yarn <bin>` (e.g. `yarn plop`, `yarn expo`). See the `u-codegen` skill for the full command reference.
 
 ## Architecture (STRICT)
 
@@ -60,16 +60,16 @@ Data          (api.ts: axios calls, mappers)         → axios client      ONLY
 - [src/theme/index.ts](src/theme/index.ts) — `AppSpacing`, `AppRadius`, `AppDurations`, light/dark colors. Mirrored in `tailwind.config.js`.
 - [src/config/env.ts](src/config/env.ts) — zod-validated env vars; reads from `EXPO_PUBLIC_*`.
 - [app/\_layout.tsx](app/_layout.tsx) — root layout, providers stack (Theme, i18n, QueryClient, ErrorBoundary).
-- [app.config.ts](app.config.ts) — dynamic Expo config, reads env per `APP_FLAVOR`.
+- [app.json](app.json) — static Expo config (name, slug, scheme, plugins).
 - [eas.json](eas.json) — EAS Build profiles: `development`, `preview`, `production`.
-- [plopfile.js](plopfile.js) — Plop generators. Run `npx plop <generator>` from repo root.
-- [package.json](package.json) — npm scripts (`typecheck`, `lint`, `test`, `start`, `plop`).
-- [.env.example](.env.example) — Template. Copy to `.env.development` / `.env.staging` / `.env.production`. `.env.*` is gitignored.
+- [plopfile.js](plopfile.js) — Plop generators. Run `yarn plop <generator>` from repo root.
+- [package.json](package.json) — scripts (`start`, `typecheck`, `lint`, `format`, `plop`, `e2e:ios`, `e2e:android`); `packageManager` pins Yarn Berry.
+- [.env.example](.env.example) — env template (`EXPO_PUBLIC_*`). Copy to `.env.local` for local dev (`.env*.local` is gitignored).
 - [.claude/docs/git-conventions.md](.claude/docs/git-conventions.md) — Conventional Commits, branch naming, scope list.
 
 ## Flavors & Launch
 
-Three EAS profiles: `development`, `preview`, `production` (read by `app.config.ts` via `APP_FLAVOR`). Local dev: `npx expo start` (uses `.env.development`). EAS build: `eas build --profile <profile> --platform <ios|android>`.
+Three EAS Build profiles: `development`, `preview`, `production` (see [eas.json](eas.json)). Local dev: `yarn expo start` (reads `EXPO_PUBLIC_*` from `.env.local`). EAS build: `yarn eas build --profile <profile> --platform <ios|android>`.
 
 ## What This Stack Uses (do NOT suggest alternatives)
 
@@ -89,7 +89,7 @@ Three EAS profiles: `development`, `preview`, `production` (read by `app.config.
 | Analytics    | `@sentry/react-native` + `analyticPerformer`                                | `console.log` for events                         |
 | Connectivity | `@react-native-community/netinfo` via `useConnectivity`                     | Polling, ad-hoc network checks                   |
 | Lint         | `eslint-config-expo` + `@typescript-eslint` + `eslint-plugin-tailwindcss`   | `eslint` alone, default config                   |
-| Codegen      | Plop.js (`npx plop`)                                                        | Hygen, Yeoman, copy-paste from existing files    |
+| Codegen      | Plop.js (`yarn plop`)                                                       | Hygen, Yeoman, copy-paste from existing files    |
 | E2E          | Maestro (YAML flows)                                                        | Detox, Appium                                    |
 
 ## Import & File Rules
@@ -106,7 +106,7 @@ Three EAS profiles: `development`, `preview`, `production` (read by `app.config.
 
 ## Token Efficiency & Agent Speed
 
-- **`npm run typecheck`**: count only `src/` and `app/` findings; ignore `node_modules` and `.expo/` cache.
+- **`yarn typecheck`**: count only `src/` and `app/` findings; ignore `node_modules` and `.expo/` cache.
 - **Localization**: only 2 locales (en, vi) — keep keys in sync across both JSON files. See `.claude/rules/localization.md`.
 - **Large files**: prefer `grep` / `Glob` over reading entirely. For files >150 lines, always use targeted Grep or Read with line range.
 - **Scope**: focus `src/` and `app/`; skip `node_modules/`, `.expo/`, `ios/`, `android/`, `*.d.ts` generated.
@@ -143,7 +143,7 @@ Load **`u-task`** for any implementation request — it orchestrates the others.
 | `u-sheet`            | Bottom sheets via `@gorhom/bottom-sheet`                                       |
 | `u-error-handling`   | `AppError`, `AppErrorCode`, try/catch, snackbar                                |
 | `u-navigation`       | Expo Router patterns, snackbar, dialog, loading overlay, deeplinks             |
-| `u-codegen`          | Plop, npm scripts, `expo prebuild`, `eas build`, env regen                     |
+| `u-codegen`          | Plop, yarn scripts, `expo prebuild`, `eas build`, env regen                    |
 | `u-analytics`        | Sentry events, `AnalyticEvent`, `analyticPerformer`                            |
 | `u-testing`          | Jest + RNTL unit tests, integration tests (per layer and cross-layer flows)    |
 | `u-finalize`         | End-of-task self-audit                                                         |
@@ -179,6 +179,17 @@ For **any request with 2 or more distinct actions** (edits, shell commands, stor
 A Stop hook (`ensure-task-complete.sh`) enforces this mechanically: it injects a block message whenever the last TodoWrite has incomplete items. **Skipping TodoWrite removes this safety net entirely** — if Claude stops randomly during a task, it is because TodoWrite was not called.
 
 Do not work around the hook — complete the tasks.
+
+## Cross-Session Feature Tracking
+
+`feature_list.json` (repo root) ghi lại feature kéo dài hơn 1 phiên. TodoWrite cho
+các bước trong phiên; `feature_list.json` cho feature xuyên phiên.
+
+- Feature dài nhiều phiên → thêm entry `status: "in_progress"` khi bắt đầu.
+- Entry → `passing` CHỈ KHI có `evidence` (output typecheck/test hoặc commit ref).
+- KHÔNG sửa/xoá entry để giấu việc chưa xong — đánh dấu `blocked` + ghi `notes`.
+- Trước khi dừng giữa feature dài: cập nhật `status` + `notes` của entry đó.
+- Task gọn trong 1 phiên: bỏ qua file này, TodoWrite là đủ.
 
 ## Compact instructions
 

@@ -14,12 +14,12 @@ TS/RN-edit specifics for this stack. Stack overview, file/import rules, and arch
 For any new screen / sheet / store / use-case hook / api module / form, scaffold via Plop **before** writing logic:
 
 ```bash
-npx plop screen <name>          # screen + Expo Router entry
-npx plop sheet <name>           # bottom sheet component
-npx plop store <name>           # Zustand store (global or feature)
-npx plop usecase <name>         # TanStack query/mutation hook
-npx plop api <name>             # feature api module (axios)
-npx plop form <name>            # react-hook-form + zod form
+yarn plop screen <name>          # screen + Expo Router entry
+yarn plop sheet <name>           # bottom sheet component
+yarn plop store <name>           # Zustand store (global or feature)
+yarn plop usecase <name>         # TanStack query/mutation hook
+yarn plop api <name>             # feature api module (axios)
+yarn plop form <name>            # react-hook-form + zod form
 ```
 
 ## Store Pattern (Zustand)
@@ -160,10 +160,10 @@ Levels: `debug / info / warn / error / critical`. `critical` additionally captur
 The `Stop` hook auto-formats changed files. Manual:
 
 ```bash
-npx prettier --write $(git diff --name-only | grep -E '\.(ts|tsx|js|json|md)$')
-npm run typecheck
-npm run lint
-npm test
+yarn prettier --write $(git diff --name-only | grep -E '\.(ts|tsx|js|json|md)$')
+yarn typecheck
+yarn lint
+yarn test
 ```
 
 Count typecheck/lint findings ONLY from `src/` and `app/`. Ignore `node_modules`, `.expo`, `dist`, `build`, generated `*.d.ts` from libs.

@@ -1,36 +1,26 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Icon, Label, NativeTabs } from 'expo-router/unstable-native-tabs';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/theme/theme';
-import { useColorScheme } from '@/lib/hooks/use-color-scheme';
+import { Neo } from '@/theme/colors';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+    <NativeTabs backgroundColor={Neo.bgApp}>
+      <NativeTabs.Trigger name="index">
+        <Label>Workout</Label>
+        <Icon sf="dumbbell.fill" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="exercises">
+        <Label>Exercises</Label>
+        <Icon sf="figure.strengthtraining.traditional" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="history">
+        <Label>History</Label>
+        <Icon sf="clock.arrow.circlepath" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="profile">
+        <Label>Profile</Label>
+        <Icon sf="person.fill" />
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }
